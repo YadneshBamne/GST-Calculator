@@ -4,15 +4,21 @@ import { ToastContainer, toast } from "react-toastify";
 import { FiDownload } from "react-icons/fi";
 import "react-toastify/dist/ReactToastify.css";
 
-
 function GSTcalculator() {
     const [name, setName] = useState("");
     const [cost, setCost] = useState("");
     const [gst, setGst] = useState("");
 
+    const rName = useRef();
     const rDate = useRef(new Date().toLocaleString());
 
-    const hDownload = () => {
+    const hName = (e) => setName(e.target.value);
+    const hCost = (e) => setCost(e.target.value);
+    const hGst = (e) => setGst(e.target.value);
+
+    const hDownload = (e) => {
+        e.preventDefault();
+
         if (!name) {
             toast.error("Please enter the product name", { position: "top-center" });
             return;
@@ -36,53 +42,58 @@ function GSTcalculator() {
         const blob = new Blob([billContent], { type: "text/plain;charset=utf-8" });
         saveAs(blob, `${name}_GST_Bill.txt`);
         toast.success("Bill downloaded successfully!", { position: "top-center" });
+
+
+        setName("");
+        setCost("");
+        setGst("");
+        rName.current.focus();
     };
 
     return (
-        <>
-            <div className="App">
-                <ToastContainer />
-                <h1>GST Bill Generator</h1>
-                <form onSubmit={(e) => e.preventDefault()}>
-                    <label>
-                        Product Name:
-                        <br />
-                        <input
-                            type="text"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                            placeholder="Enter product name"
-                        />
-                    </label>
+        <div className="App">
+            <ToastContainer />
+            <h1>GST Bill Generator</h1>
+            <form>
+                <label>
+                    Product Name:
                     <br />
-                    <label>
-                        Cost:
-                        <br />
-                        <input
-                            type="number"
-                            value={cost}
-                            onChange={(e) => setCost(e.target.value)}
-                            placeholder="Enter cost"
-                        />
-                    </label>
+                    <input
+                        type="text"
+                        ref={rName}
+                        value={name}
+                        onChange={hName}
+                        placeholder="Enter product name"
+                    />
+                </label>
+                <br />
+                <label>
+                    Cost:
                     <br />
-                    <label>
-                        GST (%):
-                        <br />
-                        <input
-                            type="number"
-                            value={gst}
-                            onChange={(e) => setGst(e.target.value)}
-                            placeholder="Enter GST Percentage"
-                        />
-                    </label>
+                    <input
+                        type="number"
+                        value={cost}
+                        onChange={hCost}
+                        placeholder="Enter cost"
+                    />
+                </label>
+                <br />
+                <label>
+                    GST (%):
                     <br />
-                    <button type="button" onClick={hDownload}>
-                        <FiDownload /> Download Bill
-                    </button>
-                </form>
-            </div>
-        </>
+                    <input
+                        type="number"
+                        value={gst}
+                        onChange={hGst}
+                        placeholder="Enter GST Percentage"
+                    />
+                </label>
+                <br />
+                <button type="button" onClick={hDownload}>
+                    <FiDownload /> Download Bill
+                </button>
+            </form>
+        </div>
     );
 }
 
