@@ -2,7 +2,7 @@ import { useState, useRef } from "react";
 import { saveAs } from "file-saver";
 import { ToastContainer, toast } from "react-toastify";
 import { FiDownload } from "react-icons/fi";
-import "react-toastify/dist/ReactToastify.css";
+
 
 function GSTcalculator() {
     const [name, setName] = useState("");
@@ -10,6 +10,8 @@ function GSTcalculator() {
     const [gst, setGst] = useState("");
 
     const rName = useRef();
+    const rCost = useRef();
+    const rGst = useRef();
     const rDate = useRef(new Date().toLocaleString());
 
     const hName = (e) => setName(e.target.value);
@@ -21,14 +23,17 @@ function GSTcalculator() {
 
         if (!name) {
             toast.error("Please enter the product name", { position: "top-center" });
+            rName.current.focus();
             return;
         }
         if (!cost) {
             toast.error("Please enter the cost", { position: "top-center" });
+            rCost.current.focus();
             return;
         }
         if (!gst) {
             toast.error("Please enter the GST percentage", { position: "top-center" });
+            rGst.current.focus();
             return;
         }
 
@@ -47,7 +52,6 @@ function GSTcalculator() {
         setName("");
         setCost("");
         setGst("");
-        rName.current.focus();
     };
 
     return (
