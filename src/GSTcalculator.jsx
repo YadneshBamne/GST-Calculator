@@ -57,7 +57,7 @@ function GSTcalculator() {
     return (
         <div className="App">
             <ToastContainer />
-            <h1>GST Bill Generator</h1>
+            <h1>Avanish GST Calculator Crayz setup</h1>
             <form>
                 <label>
                     Product Name:
